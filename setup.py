@@ -1,10 +1,11 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
-setup(name='box_jump',
-      version='1.0',
+setup(name='boxjump',
+      version='0.1',
       description='Box Jump MARL environment with graphics.',
       author='Zak Buzzard',
       email='zakbuzzard1@gmail.com',
+      packages=find_packages(),
       install_requires=[
             'swig',
             'box2d-py',
