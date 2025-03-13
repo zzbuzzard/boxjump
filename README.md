@@ -18,7 +18,50 @@ The red line shows the current best y-value.
 
 Box rotation may be enabled or disabled - the task is a lot easier with it disabled (as in the GIF above).
 
-For full details, see the docstring.
+<details>
+<summary>Full environment details</summary>
+
+
+### Observation Space
+Each agent has an observation of dimension 13 at each step (regardless
+of the number of agents), with the following values (in order):
+ - Horizontal position (0 to 1).
+ - Height above floor (0 = on the floor, n = you are n boxes high).
+ - Velocity (vx, vy).
+ - Angle (measured in _quarter turns_, so a box rotated 90 degrees is indistinguishable from the original). Stays at 0 when rotation disabled.
+ - Angular velocity. Stays at 0 when rotation disabled.
+ - Left/right/up/down raycast distances. Imagine shooting a ray 
+in each direction from each box, and measuring the distance til it hits the floor or another box.
+E.g. distance of 0.1 in the left direction means another box is very close on the left, and a distance of 1 in the down direction means the box is mid-jump.
+ - Whether the box can currently jump (0/1).
+ - Highest y-coordinate this episode (the height of the red line).
+ - Time remaining this episode (0 to 1).
+
+The observation is 'local', and has constant size regardless of the number of
+agents, so the environment can scale to many agents.
+It should be possible to build really good policies from this though,
+even in a decentralized way: for example, if a box sees an agent on its left, but no agent above it,
+it should probably try jumping on top of that box.
+
+### Global State
+The global state (`env.state()`) is the concatenation of all the per-agent observations,
+but only including highest y-coordinate and time remaining (the last two bullet-points) once as these
+are global properties.
+
+### Action Space
+A discrete action space of size 4:
+ - 0 = do nothing
+ - 1 = apply force to the left
+ - 2 = apply force to the right
+ - 3 = jump (does nothing if the agent cannot currently jump)
+
+### Rewards
+There are a few different reward schemes, which are explained in the docstring.
+The default gives rewards whenever the red line moves up (the highest y-coordinate
+during the episode), and are shared between all agents, making the task fully co-operative.
+
+</details>
+
 
 ## Installation
 ```
