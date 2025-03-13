@@ -71,3 +71,14 @@ The environment code is all in one file, `box_env.py`.
 If you run this file, it will visualise the environment with random
 agent behaviour for testing.
 
+## Citation
+If you use boxjump, please cite the original paper (paper [here](https://arxiv.org/pdf/2503.09521), code [here](https://github.com/zzbuzzard/PairVDN)):
+```
+@article{buzzard2025pairvdn,
+      title={PairVDN - Pair-wise Decomposed Value Functions}, 
+      author={Zak Buzzard},
+      year={2025},
+      url={https://arxiv.org/abs/2503.09521}, 
+}
+```
+(and if you get any cool results, send me an email!)
