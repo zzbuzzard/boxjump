@@ -11,7 +11,7 @@ setup(name='boxjump',
             'box2d-py',
             'numpy',
             'pygame',
-            'pettingzoo>=1.24',
+            'pettingzoo>=1.22',
             'gymnasium',
       ]
 )
