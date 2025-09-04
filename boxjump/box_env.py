@@ -68,7 +68,7 @@ NEGATIVE_THRESHOLD = -0.001
 W = VIEWPORT_W / SCALE
 H = VIEWPORT_H / SCALE
 
-FLOOR_Y =10
+FLOOR_Y = 15
 
 
 class BoxJumpEnvironment(ParallelEnv):
@@ -84,6 +84,8 @@ class BoxJumpEnvironment(ParallelEnv):
         dense_height_stable - same as dense_height but only considers boxes which are stable i.e. not mid-jump
         dense_height_sq   - each agent rewarded by the maximum height of all boxes at each step squared
         dense_height_stable_sq - same as dense_height_sq but only considers boxes which are stable i.e. not mid-jump
+        dense_height_cube - each agent rewarded by the maximum height of all boxes at each step cubed
+        dense_height_stable_cube - same as dense_height_cube but only considers boxes which are stable i.e. not mid-jump
 
         A total reward (with highest mode) of N means that a height of N boxes above the floor was achieved.
     """
