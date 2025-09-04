@@ -57,9 +57,9 @@ class BoxAgent:
 #                 self.env.legs[i].ground_contact = False
 
 
-VIEWPORT_W = 1000
+VIEWPORT_W = 800
 VIEWPORT_H = 600
-SCALE = 40 # Scale from pygame units to pixels
+SCALE = 30 # Scale from pygame units to pixels
 FPS = 40
 MAX_HOR_SPD = 2
 NEGATIVE_THRESHOLD = -0.001
