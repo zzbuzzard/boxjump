@@ -98,7 +98,7 @@ class BoxJumpEnvironment(ParallelEnv):
                  gravity=10, friction=0.8, spacing=1.5, random_spacing=0.5, angular_damping=1, agent_one_hot=False,
                  max_timestep=400, fixed_rotation=True, reward_mode: str = "highest", include_time: bool = False,
                  include_highest: bool = False, penalty_fall: float = 20, physics_steps_per_action=6, physics_timestep_multiplier=2.0,
-                 include_num_boxes: bool = True, termination_max_height: Optional[float] = None, termination_reward_coef: float = 0.0,
+                 include_num_boxes: bool = True, termination_max_height: Optional[float] = None, termination_reward_coef: float = 100.0,
                  termination_on_fall: bool = True, penalty_fall_termination: float = -100.0,
                  reward_only_biggest_tower: bool = True):
         """
@@ -164,6 +164,8 @@ class BoxJumpEnvironment(ParallelEnv):
             "dense_height_stable",
             "dense_height_sq",
             "dense_height_stable_sq",
+            "dense_height_cube",
+            "dense_height_stable_cube",
         ]
         self.reward_mode = reward_mode
 
@@ -460,6 +462,8 @@ class BoxJumpEnvironment(ParallelEnv):
             x += self.spacing
             body.angularDamping = self.angular_damping
             body.fixedRotation = self.fixed_rotation
+
+            # body.ApplyForceToCenter((self.np_random.uniform(-150, 150), 0), True)
 
             # (a nice blue gradient I made up)
             hue = (i / self.num_boxes) * 0.2 + 0.5
