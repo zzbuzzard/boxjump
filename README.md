@@ -34,8 +34,9 @@ of the number of agents), with the following values (in order):
 in each direction from each box, and measuring the distance til it hits the floor or another box.
 E.g. distance of 0.1 in the left direction means another box is very close on the left, and a distance of 1 in the down direction means the box is mid-jump.
  - Whether the box can currently jump (0/1).
- - Highest y-coordinate this episode (the height of the red line).
- - Time remaining this episode (0 to 1).
+ - (optional) Highest y-coordinate this episode (the height of the red line).
+ - (optional) Time remaining this episode (0 to 1).
+ - (optional) Number of boxes/agent. (intended for training policy for ranging number of agents)
 
 The observation is 'local', and has constant size regardless of the number of
 agents, so the environment can scale to many agents.
@@ -59,6 +60,7 @@ A discrete action space of size 4:
 There are a few different reward schemes, which are explained in the docstring.
 The default gives rewards whenever the red line moves up (the highest y-coordinate
 during the episode), and are shared between all agents, making the task fully co-operative.
+Additionally there is functionality to only reward the tower of boxes which contributes to the highest height which can be toggled.
 
 </details>
 
