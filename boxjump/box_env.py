@@ -556,13 +556,14 @@ class BoxJumpEnvironment(ParallelEnv):
                     body.ApplyForceToCenter((0, -250 / self.physics_timestep_multiplier), True)
 
             # Calculate height for reward calculations
+            # 0 = box sitting on the floor, 1 = directly on top of another box, ...
             height_above_floor = (FLOOR_Y - self.boxes[idx].body.position.y - self.box_height / 2) / self.box_height
 
             if self.reward_mode == "highest_stable":
+                # only stable boxes contribute to max height
                 valid = self.boxes[idx].can_jump()
-            elif self.reward_mode == "highest":
-                valid = True
             else:
+                # any box can contribute to max height
                 valid = True
 
             if height_above_floor > new_best and valid:
@@ -631,7 +632,7 @@ class BoxJumpEnvironment(ParallelEnv):
                 rewards[i] = min(exp_reward, 1000.0) / self.physics_steps_per_action
 
         # If reward_only_biggest_tower: zero rewards for agents not in tallest tower chain
-        if getattr(self, 'reward_only_biggest_tower', False):
+        if self.reward_only_biggest_tower:
             tower_indices = self._get_tower_indices()
             for idx, a in enumerate(self.agents):
                 if idx not in tower_indices:
@@ -829,8 +830,8 @@ if __name__ == "__main__":
 
     print("Running Box Jump environment in visualisation mode...")
 
-    env = BoxJumpEnvironment(render_mode="human", num_boxes=16, spacing=1.1, 
-                           physics_steps_per_action=8, physics_timestep_multiplier=2)
+    env = BoxJumpEnvironment(render_mode="human", num_boxes=16, spacing=1.1,
+                             physics_steps_per_action=8, physics_timestep_multiplier=2)
 
     n = 0
     obs, _ = env.reset(seed=n)
@@ -852,4 +853,3 @@ if __name__ == "__main__":
         length = time.time() - t
         if length < 1 / FPS:
             time.sleep(1 / FPS - length)
-            pass
