@@ -57,6 +57,8 @@ class BoxAgent:
 #                 self.env.legs[i].ground_contact = False
 
 
+# TODO: Some of these should one day be moved inside the environment,
+#  particularly W and H below which control env size.
 VIEWPORT_W = 800
 VIEWPORT_H = 600
 SCALE = 30 # Scale from pygame units to pixels
@@ -69,6 +71,21 @@ W = VIEWPORT_W / SCALE
 H = VIEWPORT_H / SCALE
 
 FLOOR_Y = 15
+
+
+# v1 of the environment changed some default values in the constructor
+# For backwards compatibility, the following is (approximately) the same environment in v0 mode:
+#  BoxJumpEnvironment(..., **v0_kwargs)
+# But using v1 is preferred!
+v0_kwargs = {
+    "fixed_rotation": False,
+    "include_time": True,
+    "include_highest": True,
+    "physics_steps_per_action": 1,
+    "physics_timestep_multiplier": 1,
+    "include_num_boxes": False,
+    "termination_on_fall": False,
+}
 
 
 class BoxJumpEnvironment(ParallelEnv):
@@ -91,20 +108,18 @@ class BoxJumpEnvironment(ParallelEnv):
     """
 
     metadata = {
-        "name": "boxjump_v0",
+        "name": "boxjump_v1",
     }
 
-    def __init__(self, num_boxes=4, world_width=10, world_height=6, box_width=1, box_height=1, render_mode=None,
+    def __init__(self, num_boxes=4, box_width=1, box_height=1, render_mode=None,
                  gravity=10, friction=0.8, spacing=1.5, random_spacing=0.5, angular_damping=1, agent_one_hot=False,
                  max_timestep=400, fixed_rotation=True, reward_mode: str = "highest", include_time: bool = False,
                  include_highest: bool = False, penalty_fall: float = 20, physics_steps_per_action=6, physics_timestep_multiplier=2.0,
                  include_num_boxes: bool = True, termination_max_height: Optional[float] = None, termination_reward_coef: float = 100.0,
                  termination_on_fall: bool = True, penalty_fall_termination: float = -100.0,
-                 reward_only_biggest_tower: bool = True):
+                 reward_only_biggest_tower: bool = False):
         """
         :param num_boxes: Number of agents.
-        :param world_width:Environment width.
-        :param world_height: Environment height.
         :param box_width: Width of each agent.
         :param box_height: Height of each agent.
         :param render_mode: None or "human" - None does not render, while "human" uses PyGame to render.
@@ -130,8 +145,6 @@ class BoxJumpEnvironment(ParallelEnv):
         :param reward_only_biggest_tower: If True, only agents in the tallest tower (by last_stood_on chain) receive rewards each step.
         """
         self.num_boxes = num_boxes
-        self.width = world_width
-        self.height = world_height
         self.box_width = box_width
         self.box_height = box_height
         self.gravity = gravity
